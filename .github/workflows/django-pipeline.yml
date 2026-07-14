@@ -34,7 +34,7 @@ jobs:
       - name: Run Black Check
         run: |
           # Target Python 3.12 syntax directly to avoid the AST parsing warning
-          black --check --target-version py312 source/
+          black --check --fast --skip-magic-trailing-comma --target-version py312 source/
 
       - name: Run Flake8
         run: |
