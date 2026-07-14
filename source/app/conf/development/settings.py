@@ -1,7 +1,6 @@
 import warnings
 from pathlib import Path
 import os
-import warnings
 from django.utils.translation import gettext_lazy as _
 
 warnings.simplefilter("error", DeprecationWarning)
