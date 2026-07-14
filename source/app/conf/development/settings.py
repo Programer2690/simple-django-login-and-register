@@ -1,6 +1,7 @@
 import warnings
 from pathlib import Path
-
+import os
+import warnings
 from django.utils.translation import gettext_lazy as _
 
 warnings.simplefilter("error", DeprecationWarning)
@@ -63,7 +64,7 @@ TEMPLATES = [
 
 WSGI_APPLICATION = "app.wsgi.application"
 
-EMAIL_BACKEND = "django.core.mail.backends.filebased.EmailBackend"
+EMAIL_BACKEND = os.environ.get( "EMAIL_BACKEND", "django.core.mail.backends.locmem.EmailBackend", )
 EMAIL_FILE_PATH = CONTENT_DIR / "tmp" / "emails"
 EMAIL_HOST_USER = "test@example.com"
 DEFAULT_FROM_EMAIL = "test@example.com"
