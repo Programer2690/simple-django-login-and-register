@@ -14,10 +14,13 @@ COPY requirements.txt .
 RUN pip install --upgrade pip
 RUN pip install --no-cache-dir -r requirements.txt
 
+# Fix 1: Copy the entire source folder (which already includes the content folder!)
 COPY source ./source
-COPY content ./content
 
-RUN mkdir -p /app/content/static
+# Fix 2: Create the static directory inside the container
+RUN mkdir -p /app/source/content/static
+
+# Fix 3: Run collectstatic pointing to the correct Django path
 RUN python source/manage.py collectstatic --noinput
 
 EXPOSE 8000
