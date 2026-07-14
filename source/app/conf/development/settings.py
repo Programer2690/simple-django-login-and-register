@@ -65,7 +65,10 @@ TEMPLATES = [
 
 WSGI_APPLICATION = "app.wsgi.application"
 
-EMAIL_BACKEND = os.environ.get( "EMAIL_BACKEND", "django.core.mail.backends.locmem.EmailBackend", )
+EMAIL_BACKEND = os.environ.get(
+    "EMAIL_BACKEND",
+    "django.core.mail.backends.locmem.EmailBackend",
+)
 EMAIL_FILE_PATH = CONTENT_DIR / "tmp" / "emails"
 EMAIL_HOST_USER = "test@example.com"
 DEFAULT_FROM_EMAIL = "test@example.com"
