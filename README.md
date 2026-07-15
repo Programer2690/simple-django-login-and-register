@@ -1,107 +1,308 @@
 # Simple Django Login and Registration
 
-[![CI pipeline](https://github.com/egorsmkv/simple-django-login-and-register/actions/workflows/ci.yml/badge.svg)](https://github.com/egorsmkv/simple-django-login-and-register/actions/workflows/ci.yml)
+[![CI Pipeline](https://img.shields.io/badge/CI-GitHub_Actions-blue?logo=githubactions)]()
+[![Docker](https://img.shields.io/badge/Docker-Containerized-2496ED?logo=docker)]()
+[![Python](https://img.shields.io/badge/Python-3.10%20%7C%203.11%20%7C%203.12-blue?logo=python)]()
+[![Django](https://img.shields.io/badge/Django-Production_Ready-092E20?logo=django)]()
 
-An example of Django project with basic user functionality.
+An enhanced version of the original **Simple Django Login and Registration** project featuring user authentication, email activation, password management, and a complete **CI/CD and Docker-based deployment pipeline**.
 
-## Screenshots
+---
 
-| Log In | Create an account | Authorized page |
-| -------|--------------|-----------------|
-| <img src="./screenshots/login.png" width="200"> | <img src="./screenshots/create_an_account.png" width="200"> | <img src="./screenshots/authorized_page.png" width="200"> |
+##  Original Features
 
-| Password reset | Set new password | Password change |
-| ---------------|------------------|-----------------|
-| <img src="./screenshots/password_reset.png" width="200"> | <img src="./screenshots/set_new_password.png" width="200"> | <img src="./screenshots/password_change.png" width="200"> |
-
-## Functionality
-
-- Log in
-    - via username & password
-    - via email & password
-    - via email or username & password
-    - with a remember me checkbox (optional)
-- Create an account
-- Log out
-- Profile activation via email
-- Reset password
-- Remind a username
-- Resend an activation code
+- User registration
+- Login via username and password
+- Login via email and password
+- Login via username or email
+- Remember me functionality
+- Email account activation
+- Password reset
+- Username reminder
+- Resend activation email
 - Change password
 - Change email
-- Change profile
-- Multilingual: English, French, Simplified Chinese and Spanish
+- Edit profile
+- Multilingual support
 
-If you need dynamic URLs with the language code, check out https://github.com/egorsmkv/simple-django-login-and-register-dynamic-lang
+---
 
-## Installing
+#  My Contributions
 
-### Clone the project
+This fork transforms the original project from a local development application into a **production-ready, containerized application with an automated CI/CD pipeline**.
+
+---
+
+##  Docker Containerization
+
+Implemented complete Docker support:
+
+- Added a production-ready `Dockerfile`
+- Added `.dockerignore`
+- Configured the application to run with **Gunicorn**
+- Built and tested Docker images locally
+- Containerized the Django application for consistent deployments
+
+### Build Docker Image
 
 ```bash
-git clone https://github.com/egorsmkv/simple-django-login-and-register
+docker build -t django-auth-app .
+```
+
+### Run Docker Container
+
+```bash
+docker run -d -p 8000:8000 --name django-auth django-auth-app
+```
+
+Application:
+
+```text
+http://localhost:8000
+```
+
+Admin Panel:
+
+```text
+http://localhost:8000/admin
+```
+
+---
+
+#  CI/CD Pipeline with GitHub Actions
+
+Implemented a multi-stage CI/CD workflow using **GitHub Actions**.
+
+## Workflow Stages
+
+### 1️ Linting Stage
+
+- Black
+- Flake8
+
+Ensures code quality and formatting standards.
+
+---
+
+### 2️ Continuous Integration (CI)
+
+Runs automatically on:
+
+- Push
+- Pull Request
+
+Tests application compatibility on:
+
+- Python 3.10
+- Python 3.11
+- Python 3.12
+
+Pipeline tasks:
+
+```bash
+python source/manage.py migrate
+python source/manage.py test
+```
+
+---
+
+### 3️ Continuous Deployment (CD)
+
+If all previous stages pass successfully:
+
+- Builds Docker image
+- Pushes image to Docker Hub
+- Publishes:
+
+```text
+latest
+```
+
+and
+
+```text
+<git-commit-sha>
+```
+
+tags.
+
+---
+
+#  Secrets Management
+
+Configured secure credential storage using GitHub Secrets:
+
+| Secret | Purpose |
+|---------|----------|
+| `DOCKER_USERNAME` | Docker Hub Username |
+| `DOCKER_PASSWORD` | Docker Hub Access Token |
+
+Repository Settings:
+
+```text
+Settings
+→ Secrets and variables
+→ Actions
+```
+
+---
+
+#  CI/CD Workflow Architecture
+
+```text
+Developer Push
+       │
+       ▼
+┌──────────────────┐
+│   Linter Stage   │
+│ Black & Flake8   │
+└──────────────────┘
+       │
+       ▼
+┌──────────────────┐
+│  Test Matrix CI  │
+│ Python 3.10      │
+│ Python 3.11      │
+│ Python 3.12      │
+└──────────────────┘
+       │
+       ▼
+┌──────────────────┐
+│ Docker Build     │
+│ & Push           │
+└──────────────────┘
+       │
+       ▼
+      Docker Hub
+```
+
+---
+
+#  Project Structure
+
+```text
+simple-django-login-and-register/
+│
+├── .github/
+│   └── workflows/
+│       └── django-pipeline.yml
+│
+├── source/
+│   ├── accounts/
+│   ├── app/
+│   └── manage.py
+│
+├── Dockerfile
+├── .dockerignore
+├── requirements.txt
+├── requirements-dev.txt
+└── README.md
+```
+
+---
+
+#  Local Development Setup
+
+## Clone Repository
+
+```bash
+git clone https://github.com/<your-username>/simple-django-login-and-register.git
 cd simple-django-login-and-register
 ```
 
-### Activate virtualenv
+## Create Virtual Environment
 
-#### Create a virtualenv using `uv`
+### Linux / macOS
 
 ```bash
-uv venv --python 3.13
-
+python -m venv .venv
 source .venv/bin/activate
 ```
 
-#### Install dependencies
+### Windows
 
-```bash
-# uv sync --upgrade --extra dev
-
-uv sync --upgrade
-
-# Or using requirements files:
-
-uv pip install -r requirements.txt
-uv pip install -r requirements-dev.txt # in development mode
+```cmd
+.venv\Scripts\activate
 ```
 
-### Configure the settings (connection to the database, connection to an SMTP server, and other options)
+## Install Dependencies
 
-1. Edit `source/app/conf/development/settings.py` if you want to develop the project.
+```bash
+pip install -r requirements-dev.txt
+```
 
-2. Edit `source/app/conf/production/settings.py` if you want to run the project in production.
-
-### Apply migrations
+## Run Migrations
 
 ```bash
 python source/manage.py migrate
 ```
 
-### Running
+## Create Superuser
 
-#### On development server
+```bash
+python source/manage.py createsuperuser
+```
 
-Start the local web server:
+## Start Development Server
 
 ```bash
 python source/manage.py runserver
 ```
 
-#### On production server
+---
 
-Collect static files:
-
-```bash
-python source/manage.py collectstatic
-```
-
-### Development
-
-#### Check & format code
-
-This command formats the code:
+#  Run Tests
 
 ```bash
-just fmt
+python source/manage.py test
 ```
+
+---
+
+#  Technologies Used
+
+- Python
+- Django
+- Docker
+- Gunicorn
+- GitHub Actions
+- Docker Hub
+- SQLite
+- Git
+- CI/CD
+- DevOps Practices
+
+---
+
+#  Learning Outcomes
+
+Through this project, I gained practical experience with:
+
+- Django application deployment
+- Docker containerization
+- GitHub Actions workflows
+- Continuous Integration and Continuous Deployment (CI/CD)
+- Environment variables and secrets management
+- Automated Docker image publishing
+- Production-ready application workflows
+- Multi-version Python testing using matrix strategies
+
+---
+
+#  Outcome
+
+Implemented an end-to-end automated workflow:
+
+```text
+Code Push
+   ↓
+Linting
+   ↓
+Automated Testing
+   ↓
+Docker Image Build
+   ↓
+Docker Hub Deployment
+```
+
+This project demonstrates hands-on experience in **Django development, DevOps, Docker, CI/CD automation, and production-ready software deployment practices**.
